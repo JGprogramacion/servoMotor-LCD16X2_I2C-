@@ -1,0 +1,32 @@
+// Si no te sale con esta direccion puedes usar (0x3f,16,2) || Arduino Uno LSB --> (0x27,16,2) ProyectoEscolar ||(0x20,16,2) 
+/*
+ Board I2C / TWI pins
+Uno, Nano =   A4 (SDA), A5 (SCL)
+Mega2560  =   20 (SDA), 21 (SCL)
+Leonardo  =   2 (SDA), 3 (SCL)
+Due       =   20 (SDA), 21 (SCL), SDA1, SCL1
+ */
+
+#include <LiquidCrystal_I2C.h>                    //Incluir libreria de LCD_I2C
+#include <Servo.h>                                //Incluir libreria de servoMotor
+
+LiquidCrystal_I2C lcd(0x27,16,2);                 //Crear objeto de la libreria LiquidCrystal_I2C con el nombre de lcd (se puede asignar cualquier nombre)
+int servoPin = 10;                                //Crear variable y asignar pin pwm para enviar una señal al servoMotor.
+Servo myServo;                                    //Crear objeto de la libreria Servo con el nombre de myServo (Se puede asignar cualquier nombre)
+
+void setup() {
+  lcd.init();			                                 //inicializar LCD
+  lcd.backlight();		                             //Activar "luz de fondo"
+  myServo.attach(servoPin);                        //Inicializar servoMotor. 
+  Serial.begin(9600);
+}
+void loop() { 
+  lcd.setCursor(2,0);                               //Seleccionar coordenadas de pantalla (Columnas, Filas)
+  lcd.print("GRADOS: 0");                           //Imprimir mensaje
+  myServo.write(0);                                 //Enviar señal pwm a servomotor, gira y se ubica en cero grados.
+  delay(2000);                                      //Tiempo de espera en los grados asignados (instrucción(es) anterior)
+  lcd.setCursor (2,0);                              //Seleccionar coordenadas de pantalla (Columnas, Filas)  
+  lcd.print("GRADOS: 90");                          //Imprimir mensaje
+  myServo.write(90);                                //Enviar señal pwm a servomotor, gira y se ubica en noventa grados.
+  delay(2000);                                      //Tiempo de espera en los grados asignados (instrucción(es) anterior después del último delay)
+}
